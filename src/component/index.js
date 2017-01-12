@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import Check from './check'
 import X from './x'
 import { pointerCoord } from './util'
-import shallowCompare from 'react-addons-shallow-compare'
+import shallowEqual from './shallowEqual'
 
 export default class Toggle extends Component {
   constructor (props) {
@@ -101,7 +101,7 @@ export default class Toggle extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+    return !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState);
   }
 
   render () {
