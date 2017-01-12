@@ -59,9 +59,5 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "react-addons-shallow-compare": "^15.3.1"
-  },
-  "peerDependencies": {
-    "react": "~0.14.0 || ^15.0.0",
-    "react-dom": "~0.14.0 || ^15.0.0"
   }
 }
