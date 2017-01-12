@@ -58,9 +58,9 @@
 	
 	var _component2 = _interopRequireDefault(_component);
 	
-	__webpack_require__(185);
+	__webpack_require__(184);
 	
-	__webpack_require__(189);
+	__webpack_require__(188);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -21967,9 +21967,9 @@
 	
 	var _util = __webpack_require__(182);
 	
-	var _reactAddonsShallowCompare = __webpack_require__(183);
+	var _shallowEqual = __webpack_require__(183);
 	
-	var _reactAddonsShallowCompare2 = _interopRequireDefault(_reactAddonsShallowCompare);
+	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -22090,7 +22090,7 @@
 	  }, {
 	    key: 'shouldComponentUpdate',
 	    value: function shouldComponentUpdate(nextProps, nextState) {
-	      return (0, _reactAddonsShallowCompare2.default)(this, nextProps, nextState);
+	      return !(0, _shallowEqual2.default)(this.props, nextProps) || !(0, _shallowEqual2.default)(this.state, nextState);
 	    }
 	  }, {
 	    key: 'render',
@@ -22319,50 +22319,89 @@
 
 /***/ },
 /* 183 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(184);
-
-/***/ },
-/* 184 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	/**
-	 * Copyright 2013-present, Facebook, Inc.
+	 * Copyright (c) 2013-present, Facebook, Inc.
 	 * All rights reserved.
 	 *
 	 * This source code is licensed under the BSD-style license found in the
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
+	 * @typechecks
+	 * 
 	 */
+	
+	/*eslint-disable no-self-compare */
 	
 	'use strict';
 	
-	var shallowEqual = __webpack_require__(123);
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
+	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	
 	/**
-	 * Does a shallow comparison for props and state.
-	 * See ReactComponentWithPureRenderMixin
-	 * See also https://facebook.github.io/react/docs/shallow-compare.html
+	 * inlined Object.is polyfill to avoid requiring consumers ship their own
+	 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
 	 */
-	function shallowCompare(instance, nextProps, nextState) {
-	  return !shallowEqual(instance.props, nextProps) || !shallowEqual(instance.state, nextState);
+	function is(x, y) {
+	  // SameValue algorithm
+	  if (x === y) {
+	    // Steps 1-5, 7-10
+	    // Steps 6.b-6.e: +0 != -0
+	    // Added the nonzero y check to make Flow happy, but it is redundant
+	    return x !== 0 || y !== 0 || 1 / x === 1 / y;
+	  } else {
+	    // Step 6.a: NaN == NaN
+	    return x !== x && y !== y;
+	  }
 	}
 	
-	module.exports = shallowCompare;
+	/**
+	 * Performs equality by iterating through keys on an object and returning false
+	 * when any key has values which are not strictly equal between the arguments.
+	 * Returns true when the values of all keys are strictly equal.
+	 */
+	function shallowEqual(objA, objB) {
+	  if (is(objA, objB)) {
+	    return true;
+	  }
+	
+	  if ((typeof objA === 'undefined' ? 'undefined' : _typeof(objA)) !== 'object' || objA === null || (typeof objB === 'undefined' ? 'undefined' : _typeof(objB)) !== 'object' || objB === null) {
+	    return false;
+	  }
+	
+	  var keysA = Object.keys(objA);
+	  var keysB = Object.keys(objB);
+	
+	  if (keysA.length !== keysB.length) {
+	    return false;
+	  }
+	
+	  // Test for A's keys different from B.
+	  for (var i = 0; i < keysA.length; i++) {
+	    if (!hasOwnProperty.call(objB, keysA[i]) || !is(objA[keysA[i]], objB[keysA[i]])) {
+	      return false;
+	    }
+	  }
+	
+	  return true;
+	}
+	
+	module.exports = shallowEqual;
 
 /***/ },
-/* 185 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(186);
+	var content = __webpack_require__(185);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(188)(content, {});
+	var update = __webpack_require__(187)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -22379,10 +22418,10 @@
 	}
 
 /***/ },
-/* 186 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(187)();
+	exports = module.exports = __webpack_require__(186)();
 	// imports
 	
 	
@@ -22393,7 +22432,7 @@
 
 
 /***/ },
-/* 187 */
+/* 186 */
 /***/ function(module, exports) {
 
 	/*
@@ -22449,7 +22488,7 @@
 
 
 /***/ },
-/* 188 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -22701,16 +22740,16 @@
 
 
 /***/ },
-/* 189 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(190);
+	var content = __webpack_require__(189);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(188)(content, {});
+	var update = __webpack_require__(187)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -22727,10 +22766,10 @@
 	}
 
 /***/ },
-/* 190 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(187)();
+	exports = module.exports = __webpack_require__(186)();
 	// imports
 	
 	
